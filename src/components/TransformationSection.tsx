@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, PlayIcon } from "lucide-react";
 
 const transformations = [
   { name: "Rahul S.", lost: "18kg", duration: "6 months", detail: "From sedentary office worker to marathon runner" },
@@ -46,7 +46,7 @@ const TransformationSection = () => {
                   <div className="font-display text-4xl text-secondary">{t.duration}</div>
                   <div className="text-muted-foreground text-xs uppercase tracking-wider font-body">Duration</div>
                 </div>
-                <ArrowRight className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
+                <PlayIcon className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
               </div>
             </motion.div>
           ))}

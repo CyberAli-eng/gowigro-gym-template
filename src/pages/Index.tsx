@@ -5,6 +5,7 @@ import TrainersSection from "@/components/TrainersSection";
 import TransformationSection from "@/components/TransformationSection";
 import PricingSection from "@/components/PricingSection";
 import FacilitiesSection from "@/components/FacilitiesSection";
+import BMI from "@/components/BMICalculatorSection";
 import LeadCaptureSection from "@/components/LeadCaptureSection";
 import FAQSection from "@/components/FAQSection";
 import FinalCTASection from "@/components/FinalCTASection";
@@ -24,16 +25,21 @@ const Index = () => {
       <GymNavbar />
       <main>
         <HeroSection />
-        <SocialProofSection />
         <div id="experience">
           <ExperienceSection />
         </div>
         <div id="trainers">
           <TrainersSection />
         </div>
-        <TransformationSection />
+        <div id="about">
+          <TransformationSection />
+        </div>
+        <SocialProofSection />
         <div id="pricing">
           <PricingSection />
+        </div>
+        <div id="bmi">
+          <BMI />
         </div>
         <FacilitiesSection />
         <LeadCaptureSection />

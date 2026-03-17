@@ -6,7 +6,7 @@ import heroImg from "@/assets/hero-gym.jpg";
 
 const stats = [
   { value: 5000, suffix: "+", label: "Active Members" },
-  { value: 12, suffix: "", label: "Certified Trainers" },
+  { value: 100, suffix: "+", label: "Certified Trainers" },
   { value: 7, suffix: "+", label: "Years Experience" },
 ];
 
@@ -49,7 +49,7 @@ function AnimatedCounter({ target, suffix }: { target: number; suffix: string })
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative py-16 min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0">
         <img
@@ -69,7 +69,7 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <p className="text-primary font-body text-sm md:text-base uppercase tracking-[0.3em] mb-4">
+          <p className="text-primary mt-10 font-body text-sm md:text-base uppercase tracking-[0.3em] mb-4">
             Elite Performance Gym
           </p>
           <h1 className="gym-heading text-5xl md:text-7xl lg:text-9xl mb-6">
@@ -88,28 +88,14 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
+          className="flex flex-col sm:flex-row gap-4 justify-center mb-20"
         >
-          <Button variant="hero" size="xl">
+          <Button variant="hero" size="xl" onClick={() => document.getElementById("free-trial")?.scrollIntoView({ behavior: "smooth" })}>
             Start Free Trial
           </Button>
-          <Button variant="heroOutline" size="xl">
+          <Button variant="heroOutline" size="xl" onClick={() => document.getElementById("free-trial")?.scrollIntoView({ behavior: "smooth" })}>
             Book Consultation
           </Button>
-        </motion.div>
-
-        {/* Trust badges */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="mt-12 flex items-center justify-center gap-4 text-muted-foreground text-sm font-body"
-        >
-          <span className="flex items-center gap-1">
-            <span className="text-primary">★★★★★</span> 4.9/5 Google Rating
-          </span>
-          <span className="hidden sm:inline text-border">|</span>
-          <span>No Contract Required</span>
         </motion.div>
       </div>
 
@@ -118,7 +104,7 @@ const HeroSection = () => {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 1 }}
-        className="absolute bottom-0 left-0 right-0 bg-card/80 backdrop-blur-md border-t border-border"
+        className="absolute bottom-0 left-0 right-0 bg-card/80 backdrop-blur-sm border-t border-border"
       >
         <div className="max-w-5xl mx-auto grid grid-cols-3 divide-x divide-border">
           {stats.map((stat) => (
@@ -126,7 +112,7 @@ const HeroSection = () => {
               <div className="font-display text-3xl md:text-5xl text-primary">
                 <AnimatedCounter target={stat.value} suffix={stat.suffix} />
               </div>
-              <div className="text-muted-foreground text-xs md:text-sm mt-1 uppercase tracking-wider font-body">
+              <div className="text-foreground text-xs md:text-sm mt-1 uppercase tracking-wider font-body">
                 {stat.label}
               </div>
             </div>

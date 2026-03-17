@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, X, ArrowUp } from "lucide-react";
+import { MessageCircle, X } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 // Sticky CTA Bar (mobile bottom)
 export const StickyCTABar = () => {
@@ -67,10 +68,11 @@ export const ScrollProgress = () => {
   );
 };
 
-// Navbar
 export const GymNavbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -78,27 +80,63 @@ export const GymNavbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const links = ["Experience", "Trainers", "Pricing", "FAQ"];
+  const handleNavClick = (id: string, isPage: boolean = false) => {
+    setMenuOpen(false);
+    
+    if (isPage) {
+      navigate(id);
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    if (location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const links = [
+    { name: "Experience", id: "experience" },
+    { name: "Trainers", id: "trainers" },
+    { name: "Pricing", id: "pricing" },
+    { name: "FAQ", id: "faq" },
+    { name: "BMI Calculator", id: "bmi" },
+  ];
 
   return (
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-card/95 backdrop-blur-md border-b border-border" : "bg-transparent"}`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
+        ? "bg-background/90 backdrop-blur-md border-b border-white/10"
+        : "bg-transparent"
+        }`}
     >
       <div className="gym-container flex items-center justify-between px-4 md:px-8 h-16 md:h-20">
-        <a href="#" className="font-display text-2xl md:text-3xl uppercase tracking-wider">
-          Elite<span className="text-primary">Gym</span>
-        </a>
+        <button onClick={() => handleNavClick('/', true)} className="font-display text-2xl md:text-3xl uppercase tracking-wider text-foreground">
+          GOWIGRO<span className="text-primary">GYM</span>
+        </button>
 
         {/* Desktop links */}
         <div className="hidden md:flex items-center gap-8">
+          <button onClick={() => handleNavClick('/', true)} className="text-foreground hover:text-primary hover:font-bold hover:-translate-y-1 transition-all font-body text-sm uppercase tracking-wider">
+            Home
+          </button>
+          <button onClick={() => handleNavClick('/about', true)} className="text-foreground hover:text-primary hover:font-bold hover:-translate-y-1 transition-all font-body text-sm uppercase tracking-wider">
+            About
+          </button>
           {links.map((link) => (
-            <a key={link} href={`#${link.toLowerCase()}`} className="text-muted-foreground hover:text-foreground transition-colors font-body text-sm uppercase tracking-wider">
-              {link}
-            </a>
+            <button key={link.name} onClick={() => handleNavClick(link.id)} className="text-foreground hover:text-primary hover:font-bold hover:-translate-y-1 transition-all font-body text-sm uppercase tracking-wider">
+              {link.name}
+            </button>
           ))}
-          <Button variant="default" size="sm" onClick={() => document.getElementById("free-trial")?.scrollIntoView({ behavior: "smooth" })}>
+          <Button variant="default" size="sm" onClick={() => handleNavClick('free-trial')}>
             Free Trial
           </Button>
         </div>
@@ -122,15 +160,21 @@ export const GymNavbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-card border-b border-border"
+            className="md:hidden bg-background/95 backdrop-blur-xl border-b border-white/10"
           >
-            <div className="px-4 py-6 space-y-4">
+            <div className="px-4 py-6 space-y-4 flex flex-col items-start">
+              <button onClick={() => handleNavClick('/', true)} className="text-foreground hover:text-primary transition-colors font-body text-sm uppercase tracking-wider w-full text-left">
+                Home
+              </button>
+              <button onClick={() => handleNavClick('/about', true)} className="text-foreground hover:text-primary transition-colors font-body text-sm uppercase tracking-wider w-full text-left">
+                About
+              </button>
               {links.map((link) => (
-                <a key={link} href={`#${link.toLowerCase()}`} onClick={() => setMenuOpen(false)} className="block text-muted-foreground hover:text-foreground font-body text-lg uppercase tracking-wider">
-                  {link}
-                </a>
+                <button key={link.name} onClick={() => handleNavClick(link.id)} className="text-foreground hover:text-primary transition-colors font-body text-sm uppercase tracking-wider w-full text-left">
+                  {link.name}
+                </button>
               ))}
-              <Button variant="default" className="w-full" onClick={() => { setMenuOpen(false); document.getElementById("free-trial")?.scrollIntoView({ behavior: "smooth" }); }}>
+              <Button variant="default" className="w-full mt-4" onClick={() => handleNavClick('free-trial')}>
                 Free Trial
               </Button>
             </div>
@@ -148,7 +192,8 @@ export const ExitIntentPopup = () => {
 
   useEffect(() => {
     const handleMouseLeave = (e: MouseEvent) => {
-      if (e.clientY <= 0 && !triggered[0]) {
+      const isLeadCaptured = localStorage.getItem('leadCaptured') === 'true';
+      if (e.clientY <= 0 && !triggered[0] && !isLeadCaptured) {
         triggered[0] = true;
         setShow(true);
       }

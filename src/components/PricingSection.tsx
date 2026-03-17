@@ -7,7 +7,7 @@ const plans = [
     name: "Basic",
     price: "49",
     period: "/month",
-    features: ["Full gym access", "Locker room", "Basic equipment", "2 group classes/week", "Mobile app access"],
+    features: ["Full gym access", "Access to all equipment", "Locker room", "2 group classes/week", "Mobile app access"],
     popular: false,
   },
   {
@@ -68,10 +68,10 @@ const PricingSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.15 }}
-              className={`gym-card p-8 relative ${plan.popular ? "border-primary gym-glow-red" : ""}`}
+              className={`gym-card p-8 relative flex flex-col h-full ${plan.popular ? "border-primary gym-glow-red" : ""}`}
             >
               {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs uppercase tracking-widest font-body font-semibold px-4 py-1 rounded-full">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs uppercase tracking-widest font-body font-semibold px-4 py-2 my-4 rounded-full">
                   Most Popular
                 </div>
               )}
@@ -80,25 +80,30 @@ const PricingSection = () => {
                 <span className="font-display text-6xl text-foreground">${plan.price}</span>
                 <span className="text-muted-foreground font-body">{plan.period}</span>
               </div>
-              <ul className="space-y-3 mb-8">
-                {plan.features.map((f) => (
-                  <li key={f} className="flex items-center gap-3 text-muted-foreground font-body">
-                    <Check className="w-4 h-4 text-primary flex-shrink-0" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <Button
-                variant={plan.popular ? "hero" : "outline"}
-                className="w-full"
-                size="lg"
-              >
-                Get Started
-              </Button>
+              <div className="flex-grow">
+                <ul className="space-y-3 mb-8">
+                  {plan.features.map((f) => (
+                    <li key={f} className="flex items-center gap-3 text-muted-foreground font-body">
+                      <Check className="w-4 h-4 text-primary flex-shrink-0" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
             </motion.div>
           ))}
         </div>
       </div>
+      <div className="flex justify-center">
+        <Button
+          variant={plans.map((plan) => plan.popular) ? "hero" : "outline"}
+          className="mt-4"
+          size="lg"
+          onClick={() => document.getElementById("free-trial")?.scrollIntoView({ behavior: "smooth" })}
+        >
+          Get Started
+        </Button></div>
     </section>
   );
 };
