@@ -5,6 +5,8 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  // GitHub Pages serves the site from /<repo>/; other hosts (Render) serve from /.
+  base: process.env.GITHUB_PAGES ? "/gowigro-gym-template/" : "/",
   server: {
     host: "::",
     port: 8080,
